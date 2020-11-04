@@ -1,4 +1,4 @@
-# flutter_app_github_trending
+# flutter app tech posts trending
 
 A new Flutter application.
 
