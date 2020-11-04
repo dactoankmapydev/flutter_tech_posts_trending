@@ -1,4 +1,4 @@
-# flutter app tech posts trending
+# Flutter app tech posts trending
 
 A Flutter application.
 
