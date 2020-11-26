@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_posts_trending/pages/bookmark_repos.dart';
+import 'package:flutter_tech_posts_trending/pages/home_page.dart';
 import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
 import 'package:flutter_tech_posts_trending/shared/spref.dart';
-
-import 'home_page.dart';
 
 class IntroPage extends StatefulWidget {
   @override
@@ -25,14 +25,16 @@ class _IntroPageState extends State<IntroPage> {
     if (isLogged != null) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+         MaterialPageRoute(builder: (context) => BookmarkRepos()),
+        // MaterialPageRoute(builder: (context) => HomePage()),
       );
       return;
     }
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => SignInPage()),
+       MaterialPageRoute(builder: (context) => HomePage()),
+      // MaterialPageRoute(builder: (context) => SignInPage()),
     );
   }
 

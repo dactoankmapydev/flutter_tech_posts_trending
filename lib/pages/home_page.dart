@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_posts_trending/pages/profile_page.dart';
+import 'package:flutter_tech_posts_trending/pages/intro_profile.dart';
+import 'package:flutter_tech_posts_trending/pages/collection.dart';
 import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
-import 'package:flutter_tech_posts_trending/pages/posts_repos.dart';
+import 'package:flutter_tech_posts_trending/pages/trending_repos.dart';
 import 'package:flutter_tech_posts_trending/shared/spref.dart';
-
-import 'bookmark_repos.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,17 +15,20 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _children = [
     TrendingRepos(),
-    BookmarkRepos(),
-    Profile(),
+    CollectionPage(),
+    IntroProfilePage(),
+    // BookmarkRepos(),
+    // Profile(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.grey[900],
         title: Text(
-          'Github Trending',
+          'Dev Posts',
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => SignInPage()),
-                  (Route<dynamic> route) => false,
+                      (Route<dynamic> route) => false,
                 );
               })
         ],
@@ -49,15 +51,15 @@ class _HomePageState extends State<HomePage> {
         items: [
           new BottomNavigationBarItem(
             icon: Icon(Icons.trending_up),
-            title: Text('Trending'),
+            title: Text('Bài viết'),
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.collections_bookmark),
-            title: Text('Bookmarks'),
+            title: Text('Bộ sưu tập'),
           ),
           new BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('Profile'),
+            title: Text('Hồ sơ của tôi'),
           )
         ],
       ),

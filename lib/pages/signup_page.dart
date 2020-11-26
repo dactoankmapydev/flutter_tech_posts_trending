@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_posts_trending/network/posts_api.dart';
-import 'package:flutter_tech_posts_trending/shared/spref.dart';
-
-import 'home_page.dart';
+import 'package:flutter_tech_posts_trending/network/api.dart';
+import 'package:flutter_tech_posts_trending/pages/home_page.dart';
+import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -18,7 +17,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        centerTitle: true,
+        title: Text('Đăng ký'),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -32,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   borderSide: new BorderSide(color: Colors.teal),
                 ),
                 suffixIcon: Icon(Icons.info),
-                hintText: 'Full name',
+                hintText: 'Họ tên',
               ),
             ),
             SizedBox(
@@ -59,18 +59,19 @@ class _SignUpPageState extends State<SignUpPage> {
                   borderSide: new BorderSide(color: Colors.teal),
                 ),
                 suffixIcon: Icon(Icons.lock),
-                hintText: 'Password',
+                hintText: 'Mật khẩu',
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
-              width: 250,
+              width: 550,
               height: 45,
               child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 color: Colors.blue,
                 onPressed: doSignUp,
                 child: Text(
-                  'Sign Up',
+                  'Đăng ký',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -83,16 +84,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void doSignUp() {
     var email = _emailController.text;
-    var pass = _passController.text;
     var fullName = _fullNameController.text;
+    var pass = _passController.text;
 
-    PostsApi().signUp(email, pass, fullName).then((user) async {
-      await SPref.instance.set("token", user.token);
+    Api().signUp(email, fullName, pass).then((user) async {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-        (Route<dynamic> route) => false,
+        MaterialPageRoute(builder: (context) => SignInPage()),
+            (Route<dynamic> route) => false,
       );
     });
   }

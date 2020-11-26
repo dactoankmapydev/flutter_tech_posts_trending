@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_posts_trending/models/user.dart';
-import 'package:flutter_tech_posts_trending/network/posts_api.dart';
+import 'package:flutter_tech_posts_trending/network/api.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -11,9 +11,9 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final TextEditingController _fullNameTxtController =
-      TextEditingController(text: '');
+  TextEditingController(text: '');
   final TextEditingController _emailTxtController =
-      TextEditingController(text: '');
+  TextEditingController(text: '');
 
   final StreamController _streamController = StreamController<User>();
   bool enableEditProfile = false;
@@ -23,8 +23,8 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
 
-    PostsApi().profile().then(
-      (user) {
+    Api().profile().then(
+          (user) {
         _streamController.sink.add(user);
       },
     );
@@ -92,12 +92,12 @@ class _ProfileState extends State<Profile> {
                         print(_fullNameTxtController.text);
                         print(_emailTxtController.text);
 
-                        PostsApi()
+                        Api()
                             .updateProfile(User(
-                                fullName: _fullNameTxtController.text,
-                                email: _emailTxtController.text))
+                            fullName: _fullNameTxtController.text,
+                            email: _emailTxtController.text))
                             .then(
-                          (user) {
+                              (user) {
                             enableEditProfile = false;
                             _streamController.sink.add(user);
                           },

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_posts_trending/models/posts_repo.dart';
-import 'package:flutter_tech_posts_trending/network/posts_api.dart';
+import 'package:flutter_tech_posts_trending/models/post_repo.dart';
+import 'package:flutter_tech_posts_trending/network/api.dart';
 
 class BookmarkRepos extends StatefulWidget {
   @override
@@ -10,13 +10,13 @@ class BookmarkRepos extends StatefulWidget {
 }
 
 class _BookmarkReposState extends State<BookmarkRepos> {
-  StreamController _streamController = StreamController<List<PostsRepo>>();
-  List<PostsRepo> _listRepo = List();
+  StreamController _streamController = StreamController<List<PostRepo>>();
+  List<PostRepo> _listRepo = List();
 
   @override
   void initState() {
     super.initState();
-    PostsApi().listBookmarks().then((listRepos) {
+    Api().listBookmarks().then((listRepos) {
       _listRepo = listRepos;
       _streamController.sink.add(listRepos);
     });
@@ -30,7 +30,7 @@ class _BookmarkReposState extends State<BookmarkRepos> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<PostsRepo>>(
+    return StreamBuilder<List<PostRepo>>(
         stream: _streamController.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -50,7 +50,7 @@ class _BookmarkReposState extends State<BookmarkRepos> {
         });
   }
 
-  Widget _buildRepo(int index, PostsRepo repo) {
+  Widget _buildRepo(int index, PostRepo repo) {
     return Container(
       padding: EdgeInsets.only(
         left: 15,
@@ -82,56 +82,59 @@ class _BookmarkReposState extends State<BookmarkRepos> {
               )
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(
-              top: 5,
-              bottom: 5,
-            ),
-            child: Text(
-              repo.tags,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                !repo.bookmarked
-                    ? GestureDetector(
-                        onTap: () {
-                          print("add bookmark" + repo.name);
-                          PostsApi().bookmark(repo.name).then(
-                            (res) {
-                              _listRepo.elementAt(index).bookmarked = true;
-                              _streamController.sink.add(_listRepo);
-                            },
-                          );
-                        },
-                        child: Container(
-                          child: Icon(Icons.bookmark_border),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          print("del bookmark" + repo.name);
-                          PostsApi().delBookmark(repo.name).then(
-                            (res) {
-                              _listRepo.elementAt(index).bookmarked = false;
-                              _streamController.sink.add(_listRepo);
-                            },
-                          );
-                        },
-                        child: Container(
-                          child: Icon(Icons.bookmark),
-                        ),
-                      ),
-              ],
-            ),
-          ),
+
+          // Container(
+          //   margin: EdgeInsets.only(top: 5),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: <Widget>[
+          //       Row(
+          //         children: <Widget>[
+          //           Container(
+          //             margin: EdgeInsets.only(right: 2),
+          //             width: 15,
+          //             height: 15,
+          //             decoration: new BoxDecoration(
+          //               shape: BoxShape.circle,
+          //             ),
+          //             child: Text(''),
+          //           ),
+          //           Text(repo.tag.isEmpty ? 'Unkown' : repo.tag)
+          //         ],
+          //       ),
+          //
+          //       !repo.bookmarked
+          //           ? GestureDetector(
+          //         onTap: () {
+          //           print("add bookmark" + repo.name);
+          //           Api().bookmark(repo.name).then(
+          //                 (res) {
+          //               _listRepo.elementAt(index).bookmarked = true;
+          //               _streamController.sink.add(_listRepo);
+          //             },
+          //           );
+          //         },
+          //         child: Container(
+          //           child: Icon(Icons.bookmark_border),
+          //         ),
+          //       )
+          //           : GestureDetector(
+          //         onTap: () {
+          //           print("del bookmark" + repo.name);
+          //           Api().delBookmark(repo.name).then(
+          //                 (res) {
+          //               _listRepo.elementAt(index).bookmarked = false;
+          //               _streamController.sink.add(_listRepo);
+          //             },
+          //           );
+          //         },
+          //         child: Container(
+          //           child: Icon(Icons.bookmark),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_posts_trending/network/posts_api.dart';
+import 'package:flutter_tech_posts_trending/network/api.dart';
+import 'package:flutter_tech_posts_trending/pages/home_page.dart';
 import 'package:flutter_tech_posts_trending/pages/signup_page.dart';
+import 'package:flutter_tech_posts_trending/pages/trending_repos.dart';
 import 'package:flutter_tech_posts_trending/shared/spref.dart';
-
-import 'home_page.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -18,7 +18,8 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        centerTitle: true,
+        title: Text('Đăng nhập'),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -46,18 +47,19 @@ class _SignInPageState extends State<SignInPage> {
                   borderSide: new BorderSide(color: Colors.teal),
                 ),
                 suffixIcon: Icon(Icons.lock),
-                hintText: 'Password',
+                hintText: 'Mật khẩu',
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
-              width: 250,
+              width: 550,
               height: 45,
               child: RaisedButton(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 color: Colors.blue,
                 onPressed: doSignIn,
                 child: Text(
-                  'Sign In',
+                  'Đăng nhập',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -72,11 +74,11 @@ class _SignInPageState extends State<SignInPage> {
               child: Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Text(
-                  'Sign up now',
+                  'Chưa có tài khoản? Đăng ký',
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.blue,
-                    decoration: TextDecoration.underline,
+                    decoration: TextDecoration.none,
                   ),
                 ),
               ),
@@ -91,7 +93,7 @@ class _SignInPageState extends State<SignInPage> {
     var email = _emailController.text;
     var pass = _passController.text;
 
-    PostsApi().signIn(email, pass).then((user) async {
+    Api().signIn(email, pass).then((user) async {
       await SPref.instance.set("token", user.token);
       Navigator.pushReplacement(
         context,
