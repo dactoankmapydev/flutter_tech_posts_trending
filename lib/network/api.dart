@@ -10,7 +10,7 @@ class Api {
     var c = Completer<List<PostRepo>>();
     try {
       var response = await Service.instance.dio.get(
-        '/posts',
+        '/trend',
       );
       var result = PostRepo.parseRepoList(response.data);
       c.complete(result);
@@ -24,9 +24,9 @@ class Api {
     var c = Completer<Void>();
     try {
       var response = await Service.instance.dio.post(
-        '/bookmark/add',
+        '/user/bookmark/add',
         data: {
-          'repo': repoName,
+          'post': repoName,
         },
       );
       if (response.statusCode == 200) {
@@ -42,9 +42,9 @@ class Api {
     var c = Completer<Void>();
     try {
       var response = await Service.instance.dio.delete(
-        '/bookmark/delete',
+        '/user/bookmark/delete',
         data: {
-          'repo': repoName,
+          'post': repoName,
         },
       );
       if (response.statusCode == 200) {
@@ -59,7 +59,7 @@ class Api {
   Future<List<PostRepo>> listBookmarks() async {
     var c = Completer<List<PostRepo>>();
     try {
-      var response = await Service.instance.dio.get('/bookmark/list');
+      var response = await Service.instance.dio.get('/user/bookmark/list');
       if (response.statusCode == 200) {
         var result = PostRepo.parseRepoList(response.data);
         c.complete(result);
@@ -90,9 +90,28 @@ class Api {
       var response = await Service.instance.dio.put(
         '/user/profile/update',
         data: {
-          'fullName': user.fullName,
+          'full_name': user.full_name,
           'email': user.email,
           'password': user.password,
+        },
+      );
+      var result = User.fromJson(response.data['data']);
+      c.complete(result);
+    } catch (e) {
+      c.completeError(e);
+    }
+    return c.future;
+  }
+
+  Future<User> signUp(String full_name, String email, String password, ) async {
+    var c = Completer<User>();
+    try {
+      var response = await Service.instance.dio.post(
+        '/user/sign-up',
+        data: {
+          'full_name': full_name,
+          'email': email,
+          'password': password,
         },
       );
       var result = User.fromJson(response.data['data']);
@@ -111,25 +130,6 @@ class Api {
         data: {
           'email': email,
           'password': password,
-        },
-      );
-      var result = User.fromJson(response.data['data']);
-      c.complete(result);
-    } catch (e) {
-      c.completeError(e);
-    }
-    return c.future;
-  }
-
-  Future<User> signUp(String email, String password, String fullName) async {
-    var c = Completer<User>();
-    try {
-      var response = await Service.instance.dio.post(
-        '/user/sign-up',
-        data: {
-          'email': email,
-          'password': password,
-          'fullName': fullName,
         },
       );
       var result = User.fromJson(response.data['data']);

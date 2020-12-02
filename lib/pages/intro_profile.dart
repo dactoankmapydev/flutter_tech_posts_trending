@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
+import 'package:flutter_tech_posts_trending/pages/signup_page.dart';
+import 'package:flutter_tech_posts_trending/shared/spref.dart';
 
 class IntroProfilePage extends StatefulWidget {
   @override
@@ -45,6 +47,15 @@ class _IntroProfilePageState extends State<IntroProfilePage> {
                   'Tạo tài khoản',
                   style: TextStyle(color: Colors.white),
                 ),
+                  onPressed: () async {
+                    var isLogged = await SPref.instance.get("token");
+                    if (isLogged == null) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                      );
+                    }
+                  }
               ),
             ),
             GestureDetector(
@@ -61,7 +72,7 @@ class _IntroProfilePageState extends State<IntroProfilePage> {
                   style: TextStyle(
                     fontSize: 17,
                     color: Colors.blue,
-                    decoration: TextDecoration.underline,
+                    decoration: TextDecoration.none,
                   ),
                 ),
               ),

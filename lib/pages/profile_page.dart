@@ -14,6 +14,8 @@ class _ProfileState extends State<Profile> {
   TextEditingController(text: '');
   final TextEditingController _emailTxtController =
   TextEditingController(text: '');
+  final TextEditingController _passwordTxtController =
+  TextEditingController(text: '');
 
   final StreamController _streamController = StreamController<User>();
   bool enableEditProfile = false;
@@ -49,8 +51,9 @@ class _ProfileState extends State<Profile> {
             );
           }
 
-          _fullNameTxtController.text = snapshot.data.fullName;
+          _fullNameTxtController.text = snapshot.data.full_name;
           _emailTxtController.text = snapshot.data.email;
+          _passwordTxtController.text = snapshot.data.password;
 
           return Container(
             padding: EdgeInsets.all(20),
@@ -64,7 +67,7 @@ class _ProfileState extends State<Profile> {
                       borderSide: new BorderSide(color: Colors.teal),
                     ),
                     suffixIcon: Icon(Icons.info),
-                    hintText: 'Full Name',
+                    hintText: 'Tên tài khoản',
                   ),
                 ),
                 SizedBox(
@@ -81,21 +84,38 @@ class _ProfileState extends State<Profile> {
                     hintText: 'Email',
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _passwordTxtController,
+                  enabled: enableEditProfile,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: new BorderSide(color: Colors.teal),
+                    ),
+                    suffixIcon: Icon(Icons.lock),
+                    hintText: 'Mật khẩu',
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
                   width: 200,
                   child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     color: Colors.blue,
                     onPressed: () {
                       if (enableEditProfile) {
                         // update profile
                         print(_fullNameTxtController.text);
-                        print(_emailTxtController.text);
+                        // print(_emailTxtController.text);
+                        print(_passwordTxtController.text);
 
                         Api()
                             .updateProfile(User(
-                            fullName: _fullNameTxtController.text,
-                            email: _emailTxtController.text))
+                            full_name: _fullNameTxtController.text,
+                            email: _emailTxtController.text,
+                            password: _passwordTxtController.text))
                             .then(
                               (user) {
                             enableEditProfile = false;
@@ -108,7 +128,7 @@ class _ProfileState extends State<Profile> {
                       });
                     },
                     child: Text(
-                      enableEditProfile ? 'Done' : 'Update Profile',
+                      enableEditProfile ? 'Xác nhận' : 'Cập nhật tài khoản',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

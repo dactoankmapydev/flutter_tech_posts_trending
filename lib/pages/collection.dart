@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
-import 'package:flutter_tech_posts_trending/pages/trending_repos.dart';
+import 'package:flutter_tech_posts_trending/pages/signup_page.dart';
+import 'package:flutter_tech_posts_trending/shared/spref.dart';
 
 class CollectionPage extends StatefulWidget {
   @override
@@ -41,11 +42,19 @@ class _CollectionPageState extends State<CollectionPage> {
               child: RaisedButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 color: Colors.blue,
-                // onPressed: doSignIn,
                 child: Text(
                   'Tạo tài khoản',
                   style: TextStyle(color: Colors.white),
                 ),
+                  onPressed: () async {
+                    var isLogged = await SPref.instance.get("token");
+                    if (isLogged == null) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                      );
+                    }
+                  }
               ),
             ),
             GestureDetector(
@@ -62,7 +71,7 @@ class _CollectionPageState extends State<CollectionPage> {
                    style: TextStyle(
                     fontSize: 17,
                     color: Colors.blue,
-                    decoration: TextDecoration.underline,
+                    decoration: TextDecoration.none,
                   ),
                 ),
               ),

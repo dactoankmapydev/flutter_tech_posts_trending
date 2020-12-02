@@ -83,60 +83,58 @@ class _BookmarkReposState extends State<BookmarkRepos> {
             ],
           ),
 
-          // Container(
-          //   margin: EdgeInsets.only(top: 5),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: <Widget>[
-          //       Row(
-          //         children: <Widget>[
-          //           Container(
-          //             margin: EdgeInsets.only(right: 2),
-          //             width: 15,
-          //             height: 15,
-          //             decoration: new BoxDecoration(
-          //               shape: BoxShape.circle,
-          //             ),
-          //             child: Text(''),
-          //           ),
-          //           Text(repo.tag.isEmpty ? 'Unkown' : repo.tag)
-          //         ],
-          //       ),
-          //
-          //       !repo.bookmarked
-          //           ? GestureDetector(
-          //         onTap: () {
-          //           print("add bookmark" + repo.name);
-          //           Api().bookmark(repo.name).then(
-          //                 (res) {
-          //               _listRepo.elementAt(index).bookmarked = true;
-          //               _streamController.sink.add(_listRepo);
-          //             },
-          //           );
-          //         },
-          //         child: Container(
-          //           child: Icon(Icons.bookmark_border),
-          //         ),
-          //       )
-          //           : GestureDetector(
-          //         onTap: () {
-          //           print("del bookmark" + repo.name);
-          //           Api().delBookmark(repo.name).then(
-          //                 (res) {
-          //               _listRepo.elementAt(index).bookmarked = false;
-          //               _streamController.sink.add(_listRepo);
-          //             },
-          //           );
-          //         },
-          //         child: Container(
-          //           child: Icon(Icons.bookmark),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          Container(
+            margin: EdgeInsets.only(top: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 15,
+                          top: 5,
+                          bottom: 5,
+                      ),
+                      width: 15,
+                      height: 15,
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      // child: Text(''),
+                    ),
+                    Text(
+                        repo.tag,
+                        style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    )
+                  ],
+                ),
+
+                repo.bookmarked
+                 ? GestureDetector()
+                 : GestureDetector(
+                  onTap: () {
+                    print("del bookmark " + repo.name);
+                    Api().delBookmark(repo.name).then(
+                          (res) {
+                        _listRepo.elementAt(index).bookmarked = false;
+                        _streamController.sink.add(_listRepo);
+                      },
+                    );
+                  },
+                  child: Container(
+                    child: Icon(Icons.bookmark),
+                  ),
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 }
+

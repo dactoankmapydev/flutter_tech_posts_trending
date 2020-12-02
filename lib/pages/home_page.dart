@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_posts_trending/pages/intro_profile.dart';
-import 'package:flutter_tech_posts_trending/pages/collection.dart';
+import 'package:flutter_tech_posts_trending/pages/profile_page.dart';
 import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
 import 'package:flutter_tech_posts_trending/pages/trending_repos.dart';
 import 'package:flutter_tech_posts_trending/shared/spref.dart';
+
+import 'bookmark_repos.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,10 +16,8 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _children = [
     TrendingRepos(),
-    CollectionPage(),
-    IntroProfilePage(),
-    // BookmarkRepos(),
-    // Profile(),
+    BookmarkRepos(),
+    Profile(),
   ];
 
   @override
@@ -28,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.grey[900],
         title: Text(
-          'Dev Posts',
+          'DevReading',
           style: TextStyle(color: Colors.white),
         ),
         actions: <Widget>[

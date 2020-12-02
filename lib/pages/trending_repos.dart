@@ -3,9 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_posts_trending/models/post_repo.dart';
 import 'package:flutter_tech_posts_trending/network/api.dart';
-import 'package:flutter_tech_posts_trending/shared/spref.dart';
-
-import 'collection.dart';
 
 class TrendingRepos extends StatefulWidget {
   @override
@@ -46,7 +43,6 @@ class _TrendingReposState extends State<TrendingRepos> {
           return ListView.builder(
 
             itemBuilder: (context, index) {
-              print(snapshot.data[index].name);
               return _buildRepo(index, snapshot.data[index]);
             },
           );
@@ -80,37 +76,70 @@ class _TrendingReposState extends State<TrendingRepos> {
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.none,
                   ),
                 ),
-              )
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(
-              left: 30,
-              top: 5,
-              bottom: 5,
-            ),
-            child: Text(
-              repo.tag,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w300,
               ),
-            ),
+
+            ],
           ),
           Container(
             margin: EdgeInsets.only(top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
-                  child: RaisedButton(
-                    onPressed: doSignIn,
+                Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 15,
+                        top: 5,
+                        bottom: 5,
+                      ),
+                      width: 15,
+                      height: 15,
+                      decoration: new BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      // child: Text(''),
+                    ),
+                    Text(
+                      repo.tag,
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    )
+                  ],
+                ),
+                !repo.bookmarked
+                    ? GestureDetector(
+                  onTap: () {
+                    print("add bookmark " + repo.name);
+                    Api().bookmark(repo.name).then(
+                          (res) {
+                        _listRepo.elementAt(index).bookmarked = true;
+                        _streamController.sink.add(_listRepo);
+                      },
+                    );
+                  },
+                  child: Container(
                     child: Icon(Icons.bookmark_border),
                   ),
                 )
+                    : GestureDetector(
+                  onTap: () {
+                    print("del bookmark " + repo.name);
+                    Api().delBookmark(repo.name).then(
+                          (res) {
+                        _listRepo.elementAt(index).bookmarked = false;
+                        _streamController.sink.add(_listRepo);
+                      },
+                    );
+                  },
+                  child: Container(
+                    child: Icon(Icons.bookmark),
+                  ),
+                ),
               ],
             ),
           ),
@@ -118,14 +147,5 @@ class _TrendingReposState extends State<TrendingRepos> {
       ),
     );
   }
-  void doSignIn() async {
-    var isLogged = await SPref.instance.get("token");
-    if (isLogged == null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => CollectionPage()),
-      );
-      return;
-    }
-  }
 }
+

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tech_posts_trending/pages/home_page.dart';
+import 'package:flutter_tech_posts_trending/pages/intro_home_page.dart';
 import 'package:flutter_tech_posts_trending/pages/intro_page.dart';
 
 void main() => runApp(MyApp());

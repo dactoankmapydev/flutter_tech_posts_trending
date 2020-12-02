@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_posts_trending/network/api.dart';
-import 'package:flutter_tech_posts_trending/pages/home_page.dart';
 import 'package:flutter_tech_posts_trending/pages/signup_page.dart';
-import 'package:flutter_tech_posts_trending/pages/trending_repos.dart';
 import 'package:flutter_tech_posts_trending/shared/spref.dart';
+
+import 'home_page.dart';
 
 class SignInPage extends StatefulWidget {
   @override

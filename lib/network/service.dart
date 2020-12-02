@@ -3,7 +3,7 @@ import 'package:flutter_tech_posts_trending/shared/spref.dart';
 
 class Service {
   static BaseOptions _options = new BaseOptions(
-    baseUrl: "http://192.168.1.15:3000",
+    baseUrl: "http://172.20.10.8:3000",
     connectTimeout: 5000,
     receiveTimeout: 3000,
   );

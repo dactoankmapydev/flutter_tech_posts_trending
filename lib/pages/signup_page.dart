@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_posts_trending/network/api.dart';
-import 'package:flutter_tech_posts_trending/pages/home_page.dart';
 import 'package:flutter_tech_posts_trending/pages/signin_page.dart';
+import 'package:flutter_tech_posts_trending/shared/spref.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -9,9 +9,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
-  final TextEditingController _fullNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   borderSide: new BorderSide(color: Colors.teal),
                 ),
                 suffixIcon: Icon(Icons.info),
-                hintText: 'Họ tên',
+                hintText: 'Tên tài khoản',
               ),
             ),
             SizedBox(
@@ -67,7 +67,8 @@ class _SignUpPageState extends State<SignUpPage> {
               width: 550,
               height: 45,
               child: RaisedButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
                 color: Colors.blue,
                 onPressed: doSignUp,
                 child: Text(
@@ -82,18 +83,19 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void doSignUp() {
-    var email = _emailController.text;
+  void doSignUp() async {
     var fullName = _fullNameController.text;
+    var email = _emailController.text;
     var pass = _passController.text;
 
-    Api().signUp(email, fullName, pass).then((user) async {
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => SignInPage()),
-            (Route<dynamic> route) => false,
-      );
+    Api().signUp(fullName, email, pass).then((user) async {
+      var isLogged = await SPref.instance.get("token");
+      if (isLogged == null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignInPage()),
+        );
+      };
     });
   }
 }
